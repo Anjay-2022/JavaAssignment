@@ -1,73 +1,100 @@
 package assignment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class EmpwageClass {
-	int wagePerHour ;
-	int fullDayHour = 8;
-	int partTimeHour = 4;
-	int employeeWagePerDay = 0;
-	int dayInMonth = 20, day = 0;
-	int sallary = 0;
-	int present = 0, parttime = 0, absent = 0;
-	int totalhours;
-	int hours = 0;
+	ArrayList<Calculate> employeedetails = new ArrayList<Calculate>();
+	HashMap<String, ArrayList<Calculate>> company = new HashMap<String, ArrayList<Calculate>>();
 
-	public EmpwageClass(int wph,int hpw) {
-		wagePerHour = wph;
-		totalhours = hpw;
-	}
+	public void getemployeedetails() {
+		Calculate calculate = new Calculate();
+		Scanner read = new Scanner(System.in);
 
-	public void calculatewage() {
+		System.out.println("Enter the name of employee");
+		calculate.setName(read.next());
 
-		while (hours < totalhours && day < dayInMonth) {
-			int ran = (int) (Math.random() * (3));
-			if (hours == (totalhours-4)) {
-				ran = 2;
-			} else if(hours > (totalhours-4)) {
-				ran = -1;
-			}
-			switch (ran) {
-			case 0:
-				absent++;
-				employeeWagePerDay = 0;
-				break;
-			case 1:
-				present++;
-				employeeWagePerDay = wagePerHour * fullDayHour;
-				hours = hours + 8;
-				break;
-			case 2:
-				parttime++;
-				employeeWagePerDay = wagePerHour * partTimeHour;
-				hours = hours + 4;
-				break;
-			default:
-				int hoursleft = totalhours - hours;
-				System.out.println(hoursleft+" hoursleft ");
-				hours=hours+hoursleft;
-			}
-			sallary = sallary + employeeWagePerDay;
+		System.out.println("Enter the wage per hours for employeedetails");
+		calculate.setWagePerHour(read.nextInt());
+		System.out.println("Enter the total number of Day in a month");
+		calculate.setDayInMonth(read.nextInt());
+		System.out.println("Enter the Maximum  working hours in a week");
+		calculate.setMaxhours(read.nextInt());
+
+		employeedetails.add(calculate);
+		calculate.calculatewage();
+		System.out.println("Enter the Company name in which you want to add this employee");
+		String companyname = read.next();
+		if (company.containsKey(companyname)) {
+			ArrayList<Calculate> employeedetails = company.get(companyname);
+			company.put(companyname, employeedetails);
+			System.out.println("New employeedetails added to existing company '" + companyname + "'");
+		} else {
+			ArrayList<Calculate> employeedetails = company.get(companyname);
+			company.put(companyname, employeedetails);
+			System.out.println(" New Company '" + companyname + "' Created");
+			System.out.println("New employee details added to '" + companyname + "'");
 		}
 	}
 
 	public void display() {
-		System.out.println("total Present is :" + present);
-		System.out.println("total Present part time is :" + parttime);
-		System.out.println("total absent is :" + absent);
-		System.out.println("EmployeeWage for a month is : " + sallary);
+		if (employeedetails.size() > 0) {
+			for (Calculate i : employeedetails)
+				System.out.println(i);
+		} else
+			System.out.println("Employee details is empty");
 
 	}
 
+	public void deletedetails() {
+		Scanner scanner = new Scanner(System.in);
+		if (employeedetails.size() > 0) {
+			System.out.println("Enter the first name of that contact you want to delete");
+			String delname = scanner.next();
+			boolean check = false;
+			for (int i = 0; i < employeedetails.size(); i++) {
+				if (employeedetails.get(i).getname().equals(delname)) {
+					check = true;
+					Calculate calculate = employeedetails.get(i); // object in i th postion Contacts in contactlist
+					employeedetails.remove(calculate);
+					System.out.println("Employee details deleted...");
+					break; // used to terminate when employee found and deleted
+				}
+			}
+			if (check == false)
+				System.out.println("Employee not found in Directory");
+
+		} else
+			System.out.println("Directory of employee is empty");
+	}
+
 	public static void main(String[] args) {
-		Scanner sc =new Scanner(System.in);
-		System.out.println("Give employee_wage_per_hour and totalhours for a week");
-		int wageph = sc.nextInt();
-		int hourpw = sc.nextInt();
-		
-		
-		EmpwageClass company1 = new EmpwageClass(wageph,hourpw);
-		company1.calculatewage();
-		company1.display();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome to the employee wage program using class and arraylist");
+		EmpwageClass emp = new EmpwageClass();
+		boolean run = true;
+
+		while (run) {
+			System.out.println(
+					"Choose the option \n1.Add employee\n2.Display details \n3.Delete details of employee\n4.Exit");
+			int option = sc.nextInt();
+			switch (option) {
+			case 1:
+				emp.getemployeedetails();
+				break;
+			case 2:
+				emp.display();
+				break;
+			case 3:
+				emp.deletedetails();
+				break;
+			case 4:
+				run = false;
+				break;
+			default:
+				System.out.println("choose correct option");
+			}
+		}
 	}
 }
