@@ -14,6 +14,9 @@ public class Calculate {
 	private int fullday = 0;
 	private int parttime = 0;
 	private int absent = 0;
+	private int pos = 0;
+	private int totalhoursleft=0;
+	private int[] dailywage = new int[32];
 
 	public void setName(String name) {
 		this.name = name;
@@ -35,6 +38,7 @@ public class Calculate {
 
 		while (totalhours < maxhours && countday < dayInMonth) {
 			int ran = (int) (Math.random() * (3));
+			
 			if (totalhours == (maxhours - 4)) {
 				ran = 2;
 			} else if (totalhours > (maxhours - 4)) {
@@ -59,10 +63,14 @@ public class Calculate {
 				totalhours = totalhours + 4;
 				break;
 			default:
-				int totalhoursleft = maxhours - totalhours;
-				//System.out.println(totalhoursleft + " totalhoursleft ");
+				 totalhoursleft = maxhours - totalhours;
+			   // System.out.println(totalhoursleft + " totalhoursleft ");
 				totalhours = totalhours + totalhoursleft;
+				employeeWagePerDay = 0;
+				
 			}
+			dailywage[pos] = employeeWagePerDay;
+			pos++;
 			sallary = sallary + employeeWagePerDay;
 		}
 	}
@@ -73,10 +81,17 @@ public class Calculate {
 
 	@Override
 	public String toString() {
-		return "Calculate [name=" + name + ", sallary=" + sallary + ", totalhours=" + totalhours + ", countday="
+		return "Calculate [name=" + name + ", sallary=" + sallary + ", totalhours=" + (totalhours-totalhoursleft) + ", countday="
 				+ countday + ", fullday=" + fullday + ", parttime=" + parttime + ", absent=" + absent + "]";
 	}
 
-	
+	public void dailywage() {
+		System.out.println("Daily wage of employee :-" + name);
+		for (int i = 0; i < pos; i++) {
+			System.out.print(dailywage[i]+",");
+		}
+		System.out.println();
+
+	}
 
 }

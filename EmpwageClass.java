@@ -19,7 +19,7 @@ public class EmpwageClass {
 		calculate.setWagePerHour(read.nextInt());
 		System.out.println("Enter the total number of Day in a month");
 		calculate.setDayInMonth(read.nextInt());
-		System.out.println("Enter the Maximum  working hours in a week");
+		System.out.println("Enter the Maximum  working hours in a month");
 		calculate.setMaxhours(read.nextInt());
 
 		employeedetails.add(calculate);
@@ -45,6 +45,27 @@ public class EmpwageClass {
 		} else
 			System.out.println("Employee details is empty");
 
+	}
+
+	public void dailywage() {
+		Scanner scanner = new Scanner(System.in);
+		if (employeedetails.size() > 0) {
+			System.out.println("Enter the first name of that contact you want to delete");
+			String delname = scanner.next();
+			boolean check = false;
+			for (int i = 0; i < employeedetails.size(); i++) {
+				if (employeedetails.get(i).getname().equals(delname)) {
+					check = true;
+					Calculate calculate = employeedetails.get(i);
+					employeedetails.get(i).dailywage();
+					break;
+				}
+			}
+			if (check == false)
+				System.out.println("Employee not found in Directory");
+
+		} else
+			System.out.println("Directory of employee is empty");
 	}
 
 	public void deletedetails() {
@@ -77,7 +98,7 @@ public class EmpwageClass {
 
 		while (run) {
 			System.out.println(
-					"Choose the option \n1.Add employee\n2.Display details \n3.Delete details of employee\n4.Exit");
+					"Choose the option \n1.Add employee\n2.Display details \n3.Delete details of employee\n4.Display dialywage\n5.Exit");
 			int option = sc.nextInt();
 			switch (option) {
 			case 1:
@@ -90,6 +111,9 @@ public class EmpwageClass {
 				emp.deletedetails();
 				break;
 			case 4:
+				emp.dailywage();
+				break;
+			case 5:
 				run = false;
 				break;
 			default:
